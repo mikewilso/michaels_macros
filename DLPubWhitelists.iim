@@ -1,0 +1,28 @@
+﻿' MASS DOWNLOAD PUBLISHER WHITELISTS
+
+' This macro takes in a list of sovrn account names and 
+' downloads all the pub whitelists for those accounts.
+
+' Input: One column of sovrn usernames
+' | COL1 = sovrn usernames |
+
+' You can run this macro from any web page.  It automatically 
+' goes to AdCenter in each loop iteration.
+VERSION BUILD=8961227 RECORDER=FX
+TAB T=1
+
+CMDLINE !DATASOURCE filename.csv
+SET !DATASOURCE_COLUMNS 1
+SET !DATASOURCE_LINE {{!LOOP}}
+
+URL GOTO=adcenter.lijit.com/
+TAG POS=1 TYPE=SPAN ATTR=ID:navtitle_publishers
+TAG POS=1 TYPE=A ATTR=ID:nav_adminpublisher_search
+TAG POS=2 TYPE=INPUT:TEXT FORM=ACTION:/adminpublisher/search ATTR=* CONTENT={{!COL1}}
+TAG POS=1 TYPE=BUTTON FORM=ACTION:/adminpublisher/search ATTR=ID:PublisherSearchButton
+TAG POS=1 TYPE=BUTTON ATTR=ID:AffiliateEditBtn*
+TAG POS=1 TYPE=A ATTR=ID:ui-menu-1-5
+ONDOWNLOAD FOLDER=/Users/miwilson/desktop/ScottPWL FILE=+_{{!NOW:yyyymmdd_hhnnss}} WAIT=YES
+TAG POS=1 TYPE=BUTTON FORM=ACTION:/adminpublisher/search_whitelist ATTR=NAME:format
+
+' Author: Michael Wilson

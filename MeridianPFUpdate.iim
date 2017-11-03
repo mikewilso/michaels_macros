@@ -1,0 +1,25 @@
+﻿' MERIDIAN MASS PRICE FLOOR UPDATE MACRO
+
+' Input: A column of Tag IDs with corresponding new price floor.
+' | COL1 = Tag ID | COL2 = New Price Floor |
+
+'Run the macro from anywhere, must be logged into AdCenter.
+VERSION BUILD=8970419 RECORDER=FX
+TAB T=1
+'                  INPUT FILE BELOW
+CMDLINE !DATASOURCE filename.csv
+SET !DATASOURCE_COLUMNS 2
+SET !DATASOURCE_LINE {{!LOOP}}
+
+TAG POS=1 TYPE=INPUT:SEARCH ATTR=* CONTENT={{!COL1}}
+
+' {{!COL1}} = Tag ID	{{!COL2}} = New price floor
+
+TAG POS=1 TYPE=A ATTR=TXT:{{!COL1}}
+
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:zone_edit_form ATTR=ID:floor CONTENT={{!COL2}}
+TAG POS=1 TYPE=BUTTON ATTR=TXT:Save
+
+WAIT SECONDS = 2
+
+' Author: Michael Wilson

@@ -1,0 +1,21 @@
+﻿'SIMILAR WEB TRAFFIC SOURCE TOP COUNTRY MACRO
+
+'Takes screenshots of Pixalate Rating page for site lists
+
+VERSION BUILD=8031994
+TAB T=1
+
+CMDLINE !DATASOURCE filename.csv
+SET !DATASOURCE_COLUMNS 1
+SET !ERRORIGNORE YES
+SET !DATASOURCE_LINE {{!LOOP}}
+
+' IAS GateKeeper
+URL GOTO=https://www.similarweb.com/website/{{!COL1}}
+WAIT SECONDS = 5
+
+ADD !EXTRACT {{!COL1}}
+TAG POS=1 TYPE=SPAN ATTR=TXT:*%<SP>*%<SP>* EXTRACT=TXT
+SAVEAS TYPE=EXTRACT FOLDER=/Users/miwilson/desktop/SimWeb FILE=filename.csv
+
+' Author: Michael Wilson

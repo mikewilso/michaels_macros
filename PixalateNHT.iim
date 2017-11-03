@@ -1,0 +1,18 @@
+﻿' Pixalate NTH% Grab
+
+VERSION BUILD=8031994
+TAB T=1
+
+CMDLINE !DATASOURCE filename.csv
+SET !DATASOURCE_COLUMNS 1
+SET !ERRORIGNORE YES
+SET !DATASOURCE_LINE {{!LOOP}}
+
+URL GOTO=https://ratings2.pixalate.com/domain-details/{{!COL1}}/GLOBAL/desktop/201705
+WAIT SECONDS = 2
+
+ADD !EXTRACT {{!COL1}}
+TAG POS=1 TYPE=P ATTR=CLASS:big-number EXTRACT=TXT
+SAVEAS TYPE=EXTRACT FOLDER=/Users/miwilson/desktop FILE=filename.csv
+
+' Author: Michael Wilson

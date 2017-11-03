@@ -1,0 +1,22 @@
+﻿' This macro updates the "Throttle Header" field in a tag's advanced options, ALSO adjust price floor
+
+' Input: A column of Tag IDs with corresponding throttle percentage.
+'|COL1 = Tag IDs | COL2= New Price Floor | COL3= Throttle percentage |
+
+' Run this macro from anywhere, must be logged into AdCenter.
+VERSION BUILD=8031994
+TAB T=1
+
+CMDLINE !DATASOURCE filename.csv
+SET !DATASOURCE_COLUMNS 3
+SET !DATASOURCE_LINE {{!LOOP}}
+
+URL GOTO=http://adcenter.lijit.com/adminpublisher/search/zone/{{!COL1}}
+
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:ZoneForm ATTR=ID:cpmfloor CONTENT={{!COL2}}
+
+TAG POS=1 TYPE=A ATTR=TXT:Advanced<SP>Options
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:ZoneForm ATTR=ID:aih_throttle_pcnt CONTENT={{!COL3}}
+TAG POS=1 TYPE=BUTTON FORM=ID:ZoneForm ATTR=ID:submit_button
+
+' Author: Michael Wilson

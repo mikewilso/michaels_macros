@@ -1,0 +1,22 @@
+﻿' MASS ENABLE EFP MACRO (money button)
+
+' This macro mass enables EFP and turns international OFF using tag IDs.
+
+' Input: List of tag IDs.
+' | COL1 = Tag IDs |
+
+' You can run this from any web page, but you must be logged into AdCenter.
+VERSION BUILD=8031994
+TAB T=1
+
+CMDLINE !DATASOURCE filename.csv
+SET !DATASOURCE_COLUMNS 1
+SET !DATASOURCE_LINE {{!LOOP}}
+
+URL GOTO=http://adcenter.lijit.com/adminpublisher/search/zone/{{!COL1}}
+
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:ZoneForm ATTR=ID:using_efp CONTENT=YES
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:ZoneForm ATTR=ID:international CONTENT=NO
+TAG POS=1 TYPE=BUTTON FORM=ID:ZoneForm ATTR=ID:submit_button
+
+' Author: Michael Wilson

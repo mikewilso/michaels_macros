@@ -1,0 +1,45 @@
+﻿' IAS MACRO 2.1
+
+' Same input, better output.  Outputs clean IAS score data.
+
+' | COL1 = URLs |
+
+VERSION  BUILD=8601111 RECORDER=FX
+TAB T=1
+SET !ERRORIGNORE YES
+SET !ERRORCONTINUE YES
+SET !EXTRACT_TEST_POPUP NO
+
+' INPUT FILE ON LINE BELOW
+CMDLINE !DATASOURCE filename.csv
+SET !DATASOURCE_COLUMNS 1
+SET !DATASOURCE_LINE {{!LOOP}}
+URL GOTO=https://api.adsafeprotected.com/db2/client/12113/itgrl?adsafe_url={{!COL1}}
+
+SET !EXTRACT {{!COL1}}
+TAG POS=1 TYPE=HTML ATTR=* EXTRACT=TXT
+SET !VAR0 {{!EXTRACT}}
+
+'This block of code sorts the extracted data into respective columns in output file.
+SET !VAR8 EVAL("var violence='{{!VAR0}}'; if(violence.includes(\"vio\")){violence=violence.match(/\"vio\":\\d+/)[0];} else{violence=0;} violence;")
+ADD !EXTRACT {{!VAR8}}
+SET !VAR1 EVAL("var drugs='{{!VAR0}}'; if(drugs.includes(\"drg\")){drugs=drugs.match(/\"drg\":\\d+/)[0];} else{drugs=0;} drugs;")
+ADD !EXTRACT {{!VAR1}}
+SET !VAR2 EVAL("var alcohol='{{!VAR0}}'; if(alcohol.includes(\"alc\")){alcohol=alcohol.match(/\"alc\":\\d+/)[0];} else{alcohol=0;} alcohol;")
+ADD !EXTRACT {{!VAR2}}
+SET !VAR3 EVAL("var offensive='{{!VAR0}}'; if(offensive.includes(\"off\")){offensive=offensive.match(/\"off\":\\d+/)[0];} else{offensive=0;} offensive;")
+ADD !EXTRACT {{!VAR3}}
+SET !VAR4 EVAL("var download='{{!VAR0}}'; if(download.includes(\"dlm\")){download=download.match(/\"dlm\":\\d+/)[0];} else{download=0;} download;")
+ADD !EXTRACT {{!VAR4}}
+SET !VAR5 EVAL("var adult='{{!VAR0}}'; if(adult.includes(\"adt\")){adult=adult.match(/\"adt\":\\d+/)[0];} else{adult=0;} adult;")
+ADD !EXTRACT {{!VAR5}}
+SET !VAR6 EVAL("var susp='{{!VAR0}}'; if(susp.includes(\"sam\")){susp=susp.match(/\"sam\":\\d+/)[0];} else{susp=0;} susp;")
+ADD !EXTRACT {{!VAR6}}
+SET !VAR7 EVAL("var hate='{{!VAR0}}'; if(hate.includes(\"hat\")){hate=hate.match(/\"hat\":\\d+/)[0];} else{hate=0;} hate;")
+ADD !EXTRACT {{!VAR7}}
+SET !VAR9 EVAL("var iab='{{!VAR0}}'; if(iab.includes(\"iab1\")){iab=iab.match(/\"iab1\":\\D+/)[0];} else{iab=0;} iab;")
+ADD !EXTRACT {{!VAR9}}
+
+SAVEAS TYPE=EXTRACT FOLDER=/Users/miwilson/Desktop/IAS_Results FILE=filename.csv
+
+' Author: Michael Wilson

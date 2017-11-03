@@ -1,0 +1,53 @@
+﻿				'=========================================='
+				
+				'             The Taginator™               '
+				
+				'         Author: Michael Wilson           '
+				
+				'=========================================='
+				
+				'          Ver. Taginator VIDEO®           '
+				
+				'..........................................'
+
+'|COL1 = Tag name | COL2 = Price Floor |
+
+'*YOU MUST BE LOGGED INTO AD CENTER*
+
+VERSION BUILD=8961227 RECORDER=FX
+SET !EXTRACT_TEST_POPUP NO
+SET !ERRORIGNORE NO
+SET !TIMEOUT 30
+'                    |                 |
+'                    |                 |
+' Start of LOOP -    V INPUT CSV FILE  V   *Note: CSV File must be in Datasources Folder for access*
+CMDLINE !DATASOURCE filename.csv
+SET !DATASOURCE_COLUMNS 2
+SET !DATASOURCE_LINE {{!LOOP}}
+
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:ZoneForm ATTR=ID:userzonename CONTENT={{!COL1}}
+
+' Picks Video in drop down
+TAG POS=1 TYPE=SELECT FORM=ID:ZoneForm ATTR=ID:delivery_type CONTENT=%7
+
+' Picks instream video drop down
+TAG POS=1 TYPE=SELECT FORM=ID:ZoneForm ATTR=ID:ad_type CONTENT=%27
+
+'Sets the price floor
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:ZoneForm ATTR=ID:cpmfloor CONTENT={{!COL2}}
+
+' SUBMITS THE FORM
+TAG POS=1 TYPE=BUTTON FORM=ID:ZoneForm ATTR=NAME:another_button
+
+WAIT SECONDS=1
+
+' Creates the Output File, compiles as it runs through the loop
+TAG POS=1 TYPE=LI ATTR=TXT:New<SP>Zone<SP>Created<SP>(*)New<SP>zone<SP>roasted! EXTRACT=TXT
+SET !VAR3 EVAL("var s='{{!EXTRACT}}'.match(/([0-9])\\d+/); s[0];")
+ADD !EXTRACT {{!VAR3}}
+ADD !EXTRACT {{!COL1}}
+SAVEAS TYPE=EXTRACT FOLDER=/Users/miwilson/desktop/AutoTags FILE=filename.csv
+' End of Loop
+
+				' © 2016 sovrn Holdings, Inc. '
+  

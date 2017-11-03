@@ -1,0 +1,20 @@
+﻿'PIXALATE MACRO
+
+'Takes screenshots of Pixalate Rating page for site lists
+
+VERSION BUILD=8031994
+TAB T=1
+
+CMDLINE !DATASOURCE filename.csv
+SET !DATASOURCE_COLUMNS 1
+SET !DATASOURCE_LINE {{!LOOP}}
+
+URL GOTO=http://ratings.pixalate.com/#domain-lookup
+
+TAG POS=2 TYPE=INPUT:TEXT ATTR=* CONTENT={{!COL1}}
+TAG POS=1 TYPE=A ATTR=TXT:Search
+WAIT SECONDS= 1
+SCREENSHOT TYPE=Page FOLDER=/Users/miwilson/Desktop/Pixalate FILE={{!COL1}}.png
+
+
+' Author: Michael Wilson

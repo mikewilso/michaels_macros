@@ -1,0 +1,19 @@
+﻿' This macro updates the "Throttle Header" field on a tag
+
+' Input: A column of Tag IDs with corresponding throttle percentage.
+'|COL1 = Tag IDs | COL2= Throttle percentage |
+
+' Run this macro from anywhere, must be logged into AdCenter.
+VERSION BUILD=8031994
+TAB T=1
+
+CMDLINE !DATASOURCE filename.csv
+SET !DATASOURCE_COLUMNS 2
+SET !DATASOURCE_LINE {{!LOOP}}
+
+URL GOTO=http://adcenter.lijit.com/adminpublisher/search/zone/{{!COL1}}
+
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:ZoneForm ATTR=ID:zone_throttle_pcnt CONTENT={{!COL2}}
+TAG POS=1 TYPE=BUTTON FORM=ID:ZoneForm ATTR=ID:submit_button
+
+' Author: Michael Wilson

@@ -1,0 +1,18 @@
+﻿' ADD SITES TO REVIEW QUEUES MACRO
+
+' Input: A column of Tag IDs with corresponding throttle percentage.
+'|COL1 = Pub Username | COL2= Site to be added to review queue |
+
+' Run this macro from anywhere, must be logged into Atlas.
+
+VERSION BUILD=8970419 RECORDER=FX
+
+CMDLINE !DATASOURCE filename.csv
+SET !DATASOURCE_COLUMNS 2
+SET !DATASOURCE_LINE {{!LOOP}}
+
+URL GOTO=https://atlas.lijit.com/#publishers/review_queue/{{!COL1}}
+TAG POS=1 TYPE=BUTTON ATTR=ID:add-sites-button
+TAG POS=1 TYPE=TEXTAREA ATTR=ID:add-sites-textarea CONTENT={{!COL2}}
+TAG POS=1 TYPE=BUTTON ATTR=ID:add-sites-confirm
+WAIT SECONDS=1

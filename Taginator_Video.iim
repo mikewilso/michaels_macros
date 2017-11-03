@@ -1,0 +1,43 @@
+﻿				'=========================================='
+				
+				'             The Taginator™               '
+				
+				'         Author: Michael Wilson           '
+				
+				'=========================================='
+				
+				'              VIDEO EDITION               '
+				
+				'..........................................'
+				
+'*NOTE: HEY YOU. YOU MUST BE LOGGED INTO ADCENTER TO EXECUTE THIS MACRO. THANKS!
+' RUN THIS MACRO FROM THE "Create Zone" Page of publisher
+
+VERSION BUILD=8961227 RECORDER=FX
+SET !EXTRACT_TEST_POPUP NO
+' | COL1 = Video Tag Name | COL2 = Price Floor | COL3 = Type of Video Tag Ref# |
+'                    |                 |
+'                    |                 |
+' Start of LOOP -    V INPUT CSV FILE  V   *Note: CSV File must be in Datasources Folder for access*
+CMDLINE !DATASOURCE filename.csv
+SET !DATASOURCE_COLUMNS 3
+SET !DATASOURCE_LINE {{!LOOP}}
+
+' Sets the tag creation settings, INTL OFF and EFP ON, respectively
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:ZoneForm ATTR=ID:international CONTENT=NO
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=ID:ZoneForm ATTR=ID:using_efp CONTENT=NO
+
+' Chooses the video option
+TAG POS=1 TYPE=SELECT FORM=ID:ZoneForm ATTR=ID:delivery_type CONTENT=%7
+
+' Sets the video tag type 
+TAG POS=1 TYPE=SELECT FORM=ID:ZoneForm ATTR=ID:ad_type CONTENT=%{{!COL3}}
+
+' Fills in text input fields i.e. Zone Name, Passback Code, CPM from datasource file, respectively
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:ZoneForm ATTR=ID:userzonename CONTENT={{!COL1}}
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:ZoneForm ATTR=ID:cpmfloor CONTENT={{!COL2}}
+
+' SUBMITS THE FORM
+TAG POS=1 TYPE=BUTTON FORM=ID:ZoneForm ATTR=NAME:another_button
+WAIT SECONDS=2
+' End of LOOP

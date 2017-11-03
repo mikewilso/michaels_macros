@@ -1,0 +1,20 @@
+﻿' CONVERTS MOBILE 300x250s INTO DISPLAY 300x250s
+
+' Input: One column of Zone IDs of the tags you are converting to display 300x250.
+
+' | COL1 = Tag ID |
+
+VERSION BUILD=8031994
+TAB T=1
+
+CMDLINE !DATASOURCE filename.csv
+SET !DATASOURCE_COLUMNS 1
+SET !DATASOURCE_LINE {{!LOOP}}
+
+URL GOTO=http://adcenter.lijit.com/adminpublisher/search/zone/{{!COL1}}
+
+TAG POS=1 TYPE=SELECT FORM=ID:ZoneForm ATTR=ID:delivery_type CONTENT=%0
+TAG POS=1 TYPE=SELECT FORM=ID:ZoneForm ATTR=ID:ad_type CONTENT=%9
+TAG POS=1 TYPE=BUTTON FORM=ID:ZoneForm ATTR=ID:submit_button
+
+'Author: Michael Wilson

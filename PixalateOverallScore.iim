@@ -1,0 +1,21 @@
+﻿'SIMILAR WEB TRAFFIC SOURCE TOP COUNTRY MACRO
+
+'Takes screenshots of Pixalate Rating page for site lists
+
+VERSION BUILD=8031994
+TAB T=1
+
+CMDLINE !DATASOURCE filename.csv
+SET !DATASOURCE_COLUMNS 1
+SET !ERRORIGNORE YES
+SET !DATASOURCE_LINE {{!LOOP}}
+
+' IAS GateKeeper
+URL GOTO=http://ratings.pixalate.com/#domain-lookup/{{!COL1}}
+WAIT SECONDS = 2
+
+ADD !EXTRACT {{!COL1}}
+TAG POS=1 TYPE=DIV ATTR=CLASS:super-special-bestest-rating* EXTRACT=TXT
+SAVEAS TYPE=EXTRACT FOLDER=/Users/miwilson/desktop/Pixalate FILE=filename.csv
+
+' Author: Michael Wilson

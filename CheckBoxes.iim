@@ -1,0 +1,18 @@
+﻿' BOX CHECKER MACRO
+
+' This macro checks boxes in publisher's accounts so you can mass download/update tags.
+' Input is tag ID's of tags you want to download/update.
+
+'| COL1 = Tag IDs |
+
+'Run this macro while inside publishers profile page in AdCenter.
+VERSION BUILD=8031994
+TAB T=1
+
+CMDLINE !DATASOURCE filename.csv
+SET !DATASOURCE_COLUMNS 1
+SET !DATASOURCE_LINE {{!LOOP}}
+
+TAG POS=1 TYPE=INPUT:CHECKBOX ATTR=NAME:{{!COL1}} CONTENT=YES
+
+' Author: Michael Wilson

@@ -1,0 +1,39 @@
+﻿' This Macro Adjust the Rev Share on any number of tags
+'*EXCEPT CAMPAIGNS 3050 and 3299*
+
+' Input: A column of Tag IDs with corresponding Rev. Share Percentage.
+'|COL1 = Tag IDs | COL2= Rev Share Percentage |
+
+' Run this macro from anywhere, must be logged into AdCenter.
+
+'*FIXED: Added table expansion to actually select all campaigns.
+VERSION BUILD=8031994
+TAB T=1
+
+CMDLINE !DATASOURCE filename.csv
+SET !DATASOURCE_COLUMNS 2
+SET !DATASOURCE_LINE {{!LOOP}}
+SET !ERRORIGNORE YES
+SET !TIMEOUT_STEP 1
+
+URL GOTO=http://adcenter.lijit.com/adminpublisher/search/zone/{{!COL1}}/revenuesplits
+
+TAG POS=1 TYPE=SELECT ATTR=NAME:zone_splits_table_length CONTENT=%100
+
+TAG POS=1 TYPE=SPAN ATTR=TXT:Select<SP>all
+TAG POS=1 TYPE=INPUT:NUMBER ATTR=ID:multi_split_value CONTENT={{!COL2}}
+TAG POS=1 TYPE=BUTTON ATTR=ID:multi_split_submit
+
+WAIT SECONDS = 1
+
+TAG POS=1 TYPE=TR ATTR=data-campaign:3050
+TAG POS=R-1 TYPE=TR ATTR=data-campaign:*
+
+TAG POS=R1 TYPE=A ATTR=TXT:remove
+
+TAG POS=1 TYPE=TR ATTR=data-campaign:3299
+TAG POS=R-1 TYPE=TR ATTR=data-campaign:*
+
+TAG POS=R1 TYPE=A ATTR=TXT:remove
+
+' Author: Michael Wilson

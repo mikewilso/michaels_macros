@@ -1,0 +1,23 @@
+﻿' Mass Change Tag Names Macro
+
+' Mass updates tag names using tag ID and new tag name.
+
+' Input:  Tag IDs with corresponding new tag name.
+' | COL1 = Tag ID | COL2 = New Tag Name |
+
+' Run this macro from any page in browser.
+' Must be logged into AdCenter.
+
+VERSION BUILD=8031994
+TAB T=1
+
+CMDLINE !DATASOURCE filename.csv
+SET !DATASOURCE_COLUMNS 2
+SET !DATASOURCE_LINE {{!LOOP}}
+
+URL GOTO=http://adcenter.lijit.com/adminpublisher/search/zone/{{!COL1}}
+
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:ZoneForm ATTR=ID:userzonename CONTENT={{!COL2}}
+TAG POS=1 TYPE=BUTTON FORM=ID:ZoneForm ATTR=ID:submit_button
+
+' Author: Michael Wilson

@@ -1,0 +1,11 @@
+﻿VERSION BUILD=8970419 RECORDER=FX
+
+CMDLINE !DATASOURCE filename.csv
+SET !DATASOURCE_COLUMNS 1
+SET !DATASOURCE_LINE {{!LOOP}}
+
+URL GOTO=http://adcenter.lijit.com/adminpublisher/search/zone/{{!COL1}}
+
+ADD !EXTRACT {{!COL1}}
+TAG POS=1 TYPE=TEXTAREA FORM=ID:ZoneForm ATTR=ID:passbacktag EXTRACT=TXT
+SAVEAS TYPE=EXTRACT FOLDER=/Users/miwilson/desktop FILE=filename.csv

@@ -1,0 +1,13 @@
+﻿' BLACKLIST MACRO
+
+VERSION BUILD=8031994
+TAB T=1
+
+CMDLINE !DATASOURCE filename.csv
+SET !DATASOURCE_COLUMNS 2
+SET !DATASOURCE_LINE {{!LOOP}}
+
+TAG POS=1 TYPE=INPUT:BUTTON FORM=ID:block_badv_response ATTR=ID:add-badv-response
+TAG POS={{!COL2}} TYPE=INPUT:TEXT FORM=ID:block_badv_response ATTR=NAME:badvText[] CONTENT={{!COL1}}
+
+' Author: Michael Wilson
